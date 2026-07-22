@@ -4,6 +4,14 @@ productName: Synertrack
 directories:
   output: dist
 
+# Publish target for CI: `electron-builder --publish always` uploads the installers
+# to a GitHub Release for the current version tag.
+publish:
+  provider: github
+  owner: hussainbangash
+  repo: synertrack-desktop
+  releaseType: release
+
 # Only ship the bundled app + runtime resources (icons). Source and dev files
 # are excluded; the app has no runtime node_modules (everything is bundled).
 files:

@@ -82,6 +82,22 @@ npm run pack:dir     # -> dist/win-unpacked/Synertrack.exe (unpacked, for testin
   Privacy & security → For developers → Developer Mode** (or run the terminal as admin) once,
   then re-run.
 
+## Releasing (automated)
+
+Releases are cut by CI ([`.github/workflows/release.yml`](.github/workflows/release.yml)) — one
+pipeline from tag to download:
+
+```powershell
+# 1. bump the version, commit, then tag and push it
+npm version patch          # or minor / major — updates package.json + creates the tag
+git push --follow-tags
+```
+
+On a `v*.*.*` tag push, GitHub Actions builds the installers on Windows and publishes a
+**GitHub Release** with them attached. The [Synertrack web app](https://synertrack.vercel.app)
+reads the *latest* release automatically (Profile → **Get the desktop app**), so a single tag
+push updates the download everywhere — no website redeploy needed.
+
 ## Architecture
 
 - **Main process** owns all state: it holds the session, polls the running timer every few

@@ -13,7 +13,8 @@
     "typecheck:web": "tsc --noEmit -p tsconfig.web.json",
     "typecheck": "npm run typecheck:node && npm run typecheck:web",
     "pack:dir": "electron-vite build && electron-builder --dir",
-    "dist:win": "electron-vite build && electron-builder --win"
+    "dist:win": "electron-vite build && electron-builder --win",
+    "release": "electron-vite build && electron-builder --win --publish always"
   },
   "dependencies": {},
   "devDependencies": {

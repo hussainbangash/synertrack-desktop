@@ -1,0 +1,35 @@
+name: Release
+
+# Push a version tag (e.g. v0.1.1) and this builds the Windows installers and
+# publishes a GitHub Release with them attached. The Synertrack web app reads the
+# latest release automatically, so a tag push updates the download everywhere.
+on:
+  push:
+    tags:
+      - "v*.*.*"
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Typecheck
+        run: npm run typecheck
+
+      - name: Build and publish installers
+        run: npm run release
+        env:
+          # electron-builder uses this to create the release and upload assets.
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
