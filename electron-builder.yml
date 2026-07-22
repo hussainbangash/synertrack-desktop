@@ -1,0 +1,29 @@
+appId: com.synertrack.desktop
+productName: Synertrack
+
+directories:
+  output: dist
+
+# Only ship the bundled app + runtime resources (icons). Source and dev files
+# are excluded; the app has no runtime node_modules (everything is bundled).
+files:
+  - out/**
+  - resources/**
+  - package.json
+
+win:
+  target:
+    - nsis
+    - portable
+  icon: resources/icon.ico
+
+nsis:
+  oneClick: false
+  perMachine: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: Synertrack
+
+portable:
+  artifactName: Synertrack-portable-${version}.exe

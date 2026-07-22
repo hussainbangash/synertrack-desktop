@@ -56,8 +56,28 @@ function circle(size, [r, g, b]) {
   return buf;
 }
 
+// Wrap a 256x256 PNG in a single-image ICO container (Windows app icon).
+function ico(pngBuffer) {
+  const header = Buffer.alloc(6);
+  header.writeUInt16LE(0, 0); // reserved
+  header.writeUInt16LE(1, 2); // type: icon
+  header.writeUInt16LE(1, 4); // image count
+  const entry = Buffer.alloc(16);
+  entry.writeUInt8(0, 0); // width 256 -> 0
+  entry.writeUInt8(0, 1); // height 256 -> 0
+  entry.writeUInt8(0, 2); // palette
+  entry.writeUInt8(0, 3); // reserved
+  entry.writeUInt16LE(1, 4); // colour planes
+  entry.writeUInt16LE(32, 6); // bits per pixel
+  entry.writeUInt32LE(pngBuffer.length, 8); // image size
+  entry.writeUInt32LE(6 + 16, 12); // offset to image data
+  return Buffer.concat([header, entry, pngBuffer]);
+}
+
 const GREEN = [34, 197, 94];
 mkdirSync("resources", { recursive: true });
+const icon256 = png(256, circle(256, GREEN));
 writeFileSync("resources/tray.png", png(32, circle(32, GREEN)));
-writeFileSync("resources/icon.png", png(256, circle(256, GREEN)));
-console.log("Wrote resources/tray.png and resources/icon.png");
+writeFileSync("resources/icon.png", icon256);
+writeFileSync("resources/icon.ico", ico(icon256));
+console.log("Wrote resources/tray.png, resources/icon.png, resources/icon.ico");

@@ -51,6 +51,23 @@ npm run start        # preview the production build
 node scripts/gen-icons.mjs   # regenerate the tray/app icons
 ```
 
+## Package a Windows app
+
+```powershell
+npm run dist:win     # -> dist/Synertrack Setup <version>.exe  (installer)
+                     #    dist/Synertrack-portable-<version>.exe (no install)
+npm run pack:dir     # -> dist/win-unpacked/Synertrack.exe (unpacked, for testing)
+```
+
+- **Installer** — double-click once to install with a Start-menu + desktop shortcut.
+- **Portable** — a single `.exe` you double-click to run directly.
+- The build is **unsigned**, so Windows SmartScreen shows "Windows protected your PC" on
+  first launch — choose **More info → Run anyway** (code signing needs a paid certificate).
+- Packaging uses `electron-builder`. On Windows it needs to extract a signing toolchain that
+  contains symlinks; if you hit *"a required privilege is not held"*, turn on **Settings →
+  Privacy & security → For developers → Developer Mode** (or run the terminal as admin) once,
+  then re-run.
+
 ## Architecture
 
 - **Main process** owns all state: it holds the session, polls the running timer every few
