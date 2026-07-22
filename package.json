@@ -1,6 +1,6 @@
 {
   "name": "synertrack-desktop",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Synertrack desktop companion — a tray timer that syncs with your Synertrack account.",
   "author": "Muhammad Hussain Bangash",
   "license": "MIT",
