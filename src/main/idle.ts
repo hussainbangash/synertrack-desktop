@@ -2,7 +2,7 @@ import { powerMonitor } from "electron";
 import { getState, setIdle } from "./app-state";
 
 // Any continuous stretch without keyboard/mouse input this long (or longer) is
-// treated as idle and subtracted from worked time. Configurable — larger values
+// treated as idle and subtracted from worked time. Configurable - larger values
 // are more forgiving of reading/thinking pauses.
 const IDLE_THRESHOLD_SECONDS = 10;
 const POLL_MS = 2000;

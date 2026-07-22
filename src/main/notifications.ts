@@ -41,7 +41,7 @@ export function initReminders(): void {
     const trackedToday = lastTrackedDay === today;
     if (s.user && !s.running && now.getHours() >= NUDGE_HOUR && !trackedToday && lastNudgeDay !== today) {
       lastNudgeDay = today;
-      notify("Track your time", "You haven't started a timer today — log your work in Synertrack.");
+      notify("Track your time", "You haven't started a timer today - log your work in Synertrack.");
     }
   }, 60_000);
 }

@@ -39,7 +39,7 @@ function Running({ state }: { state: AppState }): React.JSX.Element {
       {running.task ? <div className="running-task">{running.task.title}</div> : null}
       <div className={`elapsed ${state.currentlyIdle ? "is-idle" : ""}`}>{formatDuration(net)}</div>
       {state.currentlyIdle ? (
-        <div className="idle-badge">⏸ Idle — not counting time</div>
+        <div className="idle-badge">⏸ Idle - not counting time</div>
       ) : state.runningIdleSeconds > 0 ? (
         <div className="idle-note">{formatDuration(state.runningIdleSeconds)} idle removed</div>
       ) : null}

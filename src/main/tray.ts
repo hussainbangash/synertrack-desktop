@@ -53,10 +53,10 @@ function updateTooltip(): void {
   if (state.running) {
     const idle = state.currentlyIdle ? " (idle)" : "";
     tray.setToolTip(
-      `Synertrack — ${state.running.project.name} · ${formatDuration(elapsedSeconds())}${idle}`
+      `Synertrack - ${state.running.project.name} · ${formatDuration(elapsedSeconds())}${idle}`
     );
   } else {
-    tray.setToolTip(state.user ? "Synertrack — idle" : "Synertrack — signed out");
+    tray.setToolTip(state.user ? "Synertrack - idle" : "Synertrack - signed out");
   }
 }
 
