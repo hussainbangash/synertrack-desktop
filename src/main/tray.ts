@@ -9,10 +9,10 @@ let tray: Tray | null = null;
 function elapsedSeconds(): number {
   const s = getState();
   if (!s.running) return 0;
-  return Math.max(
-    0,
-    Math.floor((Date.now() + s.serverTimeOffsetMs - new Date(s.running.startTime).getTime()) / 1000)
+  const gross = Math.floor(
+    (Date.now() + s.serverTimeOffsetMs - new Date(s.running.startTime).getTime()) / 1000
   );
+  return Math.max(0, gross - s.runningIdleSeconds); // net worked time
 }
 
 function buildMenu(): Menu {
@@ -51,7 +51,10 @@ function updateTooltip(): void {
   if (!tray) return;
   const state = getState();
   if (state.running) {
-    tray.setToolTip(`Synertrack — ${state.running.project.name} · ${formatDuration(elapsedSeconds())}`);
+    const idle = state.currentlyIdle ? " (idle)" : "";
+    tray.setToolTip(
+      `Synertrack — ${state.running.project.name} · ${formatDuration(elapsedSeconds())}${idle}`
+    );
   } else {
     tray.setToolTip(state.user ? "Synertrack — idle" : "Synertrack — signed out");
   }

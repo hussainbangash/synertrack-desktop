@@ -10,6 +10,8 @@ const EMPTY_STATE: AppState = {
   projects: [],
   running: null,
   serverTimeOffsetMs: 0,
+  runningIdleSeconds: 0,
+  currentlyIdle: false,
   lastError: null,
 };
 
@@ -32,6 +34,14 @@ export function onStateChange(listener: (s: AppState) => void): void {
 
 export function getCredentials(): { serverUrl: string; token: string } | null {
   return creds;
+}
+
+/** Fed by the idle watcher: accumulated idle seconds + whether we're idle now. */
+export function setIdle(accumulatedSeconds: number, currentlyIdle: boolean): void {
+  if (state.runningIdleSeconds === accumulatedSeconds && state.currentlyIdle === currentlyIdle) {
+    return;
+  }
+  setState({ runningIdleSeconds: accumulatedSeconds, currentlyIdle });
 }
 
 function broadcast(): void {
@@ -147,6 +157,8 @@ export async function startTimer(input: StartTimerInput): Promise<ActionResult> 
       running: res.running,
       serverTimeOffsetMs: offsetFrom(res.serverTime),
       connected: true,
+      runningIdleSeconds: 0,
+      currentlyIdle: false,
       lastError: null,
     });
     if (!pollTimer) startPolling();
@@ -170,9 +182,11 @@ export async function toggleTimer(): Promise<ActionResult & { needsPick?: boolea
 
 export async function stopTimer(idleSeconds?: number): Promise<ActionResult> {
   if (!creds) return { ok: false, error: "Not signed in." };
+  // Default to the idle we've accumulated for this timer if none was passed in.
+  const idle = idleSeconds ?? state.runningIdleSeconds;
   try {
-    await api.stopTimer(creds.serverUrl, creds.token, idleSeconds);
-    setState({ running: null });
+    await api.stopTimer(creds.serverUrl, creds.token, idle);
+    setState({ running: null, runningIdleSeconds: 0, currentlyIdle: false });
     return { ok: true };
   } catch (e) {
     return { ok: false, error: (e as Error).message };

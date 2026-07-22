@@ -16,8 +16,11 @@ always-on-top mini widget, and stay in sync with the web app and your team.
   time is always in view. Windows taskbar shows a "running" overlay dot too.
 - **Global hotkey** — `Ctrl/Cmd + Shift + T` toggles the timer from any app; it resumes
   your last project.
-- **Idle detection** — if you're away from the keyboard for 5+ minutes while tracking,
-  it asks whether to keep or discard the idle time when you return.
+- **Idle detection** — any stretch without keyboard/mouse input past the threshold
+  (default 10s) is automatically treated as idle and subtracted from your worked time.
+  The live clock pauses during idle and shows an "Idle" indicator; the recorded duration
+  is net work (e.g. 10h running − 20m idle = 9h 40m logged). Adjust the threshold in
+  `src/main/idle.ts`.
 - **Reminders** — a break nudge after 90 minutes of continuous tracking, and an afternoon
   nudge if you haven't tracked anything that day.
 - **Synced clock** — elapsed time is computed from the server's clock, so desktop and web

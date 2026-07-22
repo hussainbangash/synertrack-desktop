@@ -20,7 +20,8 @@ function Footer({ state }: { state: AppState }): React.JSX.Element {
 
 function Running({ state }: { state: AppState }): React.JSX.Element {
   const running = state.running!;
-  const elapsed = useElapsedSeconds(running.startTime, state.serverTimeOffsetMs);
+  const gross = useElapsedSeconds(running.startTime, state.serverTimeOffsetMs);
+  const net = Math.max(0, gross - state.runningIdleSeconds);
   const [busy, setBusy] = useState(false);
 
   async function stop(): Promise<void> {
@@ -36,7 +37,12 @@ function Running({ state }: { state: AppState }): React.JSX.Element {
         {running.project.name}
       </div>
       {running.task ? <div className="running-task">{running.task.title}</div> : null}
-      <div className="elapsed">{formatDuration(elapsed)}</div>
+      <div className={`elapsed ${state.currentlyIdle ? "is-idle" : ""}`}>{formatDuration(net)}</div>
+      {state.currentlyIdle ? (
+        <div className="idle-badge">⏸ Idle — not counting time</div>
+      ) : state.runningIdleSeconds > 0 ? (
+        <div className="idle-note">{formatDuration(state.runningIdleSeconds)} idle removed</div>
+      ) : null}
       {running.notes ? <div className="running-notes">{running.notes}</div> : null}
       <button type="button" className="stop" onClick={() => void stop()} disabled={busy}>
         {busy ? "Stopping…" : "■ Stop"}

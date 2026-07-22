@@ -36,6 +36,10 @@ export interface AppState {
   running: RunningTimer | null;
   /** server clock minus local clock (ms); add to Date.now() for synced elapsed. */
   serverTimeOffsetMs: number;
+  /** Idle seconds accumulated for the running timer (subtracted from worked time). */
+  runningIdleSeconds: number;
+  /** True while the user is currently idle past the threshold. */
+  currentlyIdle: boolean;
   lastError: string | null;
 }
 

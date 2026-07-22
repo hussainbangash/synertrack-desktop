@@ -8,6 +8,8 @@ const INITIAL: AppState = {
   projects: [],
   running: null,
   serverTimeOffsetMs: 0,
+  runningIdleSeconds: 0,
+  currentlyIdle: false,
   lastError: null,
 };
 

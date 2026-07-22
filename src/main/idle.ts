@@ -1,55 +1,51 @@
-import { dialog, powerMonitor } from "electron";
-import { getState, stopTimer } from "./app-state";
+import { powerMonitor } from "electron";
+import { getState, setIdle } from "./app-state";
 
-// How long with no keyboard/mouse input counts as "away" while a timer runs.
-const IDLE_THRESHOLD_SECONDS = 300; // 5 minutes
-const POLL_MS = 5000;
+// Any continuous stretch without keyboard/mouse input this long (or longer) is
+// treated as idle and subtracted from worked time. Configurable — larger values
+// are more forgiving of reading/thinking pauses.
+const IDLE_THRESHOLD_SECONDS = 10;
+const POLL_MS = 2000;
 
-let wasIdle = false;
-let peakIdleSeconds = 0;
-let prompting = false;
+let currentTimerId: string | null = null;
+let accumulated = 0; // total idle seconds counted for the current timer
+let countedInEpisode = 0; // idle already counted within the ongoing idle stretch
 
 export function initIdleWatch(): void {
-  setInterval(() => void tick(), POLL_MS);
+  setInterval(tick, POLL_MS);
 }
 
-async function tick(): Promise<void> {
-  const state = getState();
-  if (!state.running || prompting) {
-    wasIdle = false;
+function tick(): void {
+  const running = getState().running;
+
+  // No timer → nothing to accumulate; reset for the next one.
+  if (!running) {
+    currentTimerId = null;
+    accumulated = 0;
+    countedInEpisode = 0;
     return;
+  }
+
+  // A new timer started → start its idle tally fresh.
+  if (running.id !== currentTimerId) {
+    currentTimerId = running.id;
+    accumulated = 0;
+    countedInEpisode = 0;
   }
 
   const idle = powerMonitor.getSystemIdleTime(); // seconds since last input
 
   if (idle >= IDLE_THRESHOLD_SECONDS) {
-    wasIdle = true;
-    peakIdleSeconds = idle;
-  } else if (wasIdle && idle < IDLE_THRESHOLD_SECONDS) {
-    // The user just came back from an idle stretch.
-    wasIdle = false;
-    await promptIdle(peakIdleSeconds);
-  }
-}
-
-async function promptIdle(idleSeconds: number): Promise<void> {
-  prompting = true;
-  try {
-    const minutes = Math.max(1, Math.round(idleSeconds / 60));
-    const { response } = await dialog.showMessageBox({
-      type: "question",
-      buttons: ["Keep it", "Discard idle time"],
-      defaultId: 0,
-      cancelId: 0,
-      title: "You were away",
-      message: `You were idle for about ${minutes} minute${minutes === 1 ? "" : "s"}.`,
-      detail: "Keep this time on your timer, or discard the idle stretch (this stops the timer)?",
-    });
-    // Discard: stop the entry, trimming the idle tail off the end.
-    if (response === 1 && getState().running) {
-      await stopTimer(idleSeconds);
+    // Within an idle stretch: count the newly-elapsed idle seconds. The first
+    // reading past the threshold pulls in the whole stretch so far.
+    if (idle > countedInEpisode) {
+      accumulated += idle - countedInEpisode;
+      countedInEpisode = idle;
     }
-  } finally {
-    prompting = false;
+    setIdle(accumulated, true);
+  } else {
+    // Active again → the stretch (if any) ended.
+    countedInEpisode = 0;
+    setIdle(accumulated, false);
   }
 }

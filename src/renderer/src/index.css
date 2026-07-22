@@ -266,3 +266,20 @@ button:disabled {
 .mini-stop:hover {
   background: #dc2626;
 }
+
+/* Idle state */
+.elapsed.is-idle,
+.mini-elapsed.is-idle {
+  color: var(--muted);
+}
+.idle-badge {
+  color: #f59e0b;
+  font-size: 12px;
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+.idle-note {
+  color: var(--muted);
+  font-size: 11px;
+  margin-bottom: 8px;
+}
