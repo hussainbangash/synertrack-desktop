@@ -1,0 +1,268 @@
+:root {
+  --bg: #0f172a;
+  --panel: #1e293b;
+  --text: #e2e8f0;
+  --muted: #94a3b8;
+  --accent: #22c55e;
+  --accent-hover: #16a34a;
+  --danger: #ef4444;
+  --border: #334155;
+  --field: #0b1220;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--text);
+  -webkit-user-select: none;
+  user-select: none;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+/* Header */
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 16px;
+  font-weight: 700;
+  border-bottom: 1px solid var(--border);
+}
+.brand-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  background: var(--accent);
+}
+.brand-name {
+  flex: 1;
+}
+.conn {
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+}
+.conn.ok {
+  background: var(--accent);
+}
+.conn.off {
+  background: var(--muted);
+}
+
+/* Shared form bits */
+label {
+  display: block;
+  font-size: 12px;
+  color: var(--muted);
+  margin-bottom: 12px;
+}
+input,
+select {
+  width: 100%;
+  margin-top: 4px;
+  padding: 9px 10px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  background: var(--field);
+  color: var(--text);
+  font-size: 14px;
+  outline: none;
+}
+input:focus,
+select:focus {
+  border-color: var(--accent);
+}
+button {
+  cursor: pointer;
+  border: none;
+  border-radius: 8px;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 12px;
+}
+button:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.error {
+  color: #fca5a5;
+  font-size: 13px;
+  margin: 4px 0 10px;
+}
+.hint {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+/* Sign in */
+.signin {
+  padding: 18px 16px;
+}
+.signin h1 {
+  font-size: 20px;
+  margin: 0 0 6px;
+}
+.signin form button {
+  width: 100%;
+  background: var(--accent);
+  color: #052e16;
+  margin-top: 4px;
+}
+.signin form button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+/* Timer */
+.timer {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  padding: 18px 16px;
+}
+.timer .start {
+  width: 100%;
+  background: var(--accent);
+  color: #052e16;
+  margin-top: auto;
+}
+.timer .start:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.running {
+  align-items: center;
+  text-align: center;
+}
+.running-project {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 600;
+  margin-top: 8px;
+}
+.pdot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+}
+.running-task {
+  color: var(--muted);
+  font-size: 13px;
+  margin-top: 4px;
+}
+.elapsed {
+  font-size: 46px;
+  font-variant-numeric: tabular-nums;
+  font-weight: 700;
+  letter-spacing: 1px;
+  margin: 18px 0;
+}
+.running-notes {
+  color: var(--muted);
+  font-size: 13px;
+  font-style: italic;
+  margin-bottom: 8px;
+}
+.running .stop {
+  width: 100%;
+  background: var(--danger);
+  color: #fff;
+  margin-top: auto;
+}
+.running .stop:hover:not(:disabled) {
+  background: #dc2626;
+}
+
+/* Footer */
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  font-size: 12px;
+  color: var(--muted);
+}
+.foot-email {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.link {
+  background: none;
+  color: var(--muted);
+  padding: 4px 6px;
+}
+.link:hover {
+  color: var(--text);
+}
+.notes-input {
+  margin-bottom: 12px;
+}
+
+/* Mini always-on-top timer widget */
+.mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  height: 100vh;
+  padding: 0 12px;
+  background: var(--panel);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  -webkit-app-region: drag;
+}
+.mini-empty {
+  justify-content: center;
+  color: var(--muted);
+  font-size: 13px;
+}
+.mini .pdot {
+  width: 10px;
+  height: 10px;
+  border-radius: 999px;
+  flex-shrink: 0;
+}
+.mini-text {
+  flex: 1;
+  min-width: 0;
+}
+.mini-project {
+  font-size: 12px;
+  color: var(--muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.mini-elapsed {
+  font-size: 22px;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.5px;
+}
+.mini-stop {
+  -webkit-app-region: no-drag;
+  background: var(--danger);
+  color: #fff;
+  width: 34px;
+  height: 34px;
+  border-radius: 8px;
+  flex-shrink: 0;
+  font-size: 12px;
+}
+.mini-stop:hover {
+  background: #dc2626;
+}
