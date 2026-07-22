@@ -8,6 +8,17 @@ always-on-top mini widget, and stay in sync with the web app and your team.
 > the same account over a token-authenticated API, so a timer you start here shows
 > up on the web dashboard (and vice-versa).
 
+## Download (Windows)
+
+Grab the latest build from the [**Releases**](https://github.com/hussainbangash/synertrack-desktop/releases/latest) page:
+
+- **`Synertrack Setup <version>.exe`** — installer (Start-menu + desktop shortcut).
+- **`Synertrack-portable-<version>.exe`** — single file, runs without installing.
+
+The build is unsigned, so on first launch Windows SmartScreen shows "Windows protected
+your PC" → **More info → Run anyway**. Then sign in with a token from your Synertrack
+profile (see below).
+
 ## Features
 
 - **Tray timer** — start/stop against any of your projects straight from the system tray.
