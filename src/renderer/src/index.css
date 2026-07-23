@@ -1,14 +1,15 @@
 :root {
-  --bg: #0f172a;
-  --panel: #1e293b;
-  --text: #e2e8f0;
-  --muted: #94a3b8;
-  --accent: #22c55e;
-  --accent-hover: #16a34a;
+  --bg: #f8fafc;
+  --panel: #ffffff;
+  --text: #0f172a;
+  --muted: #64748b;
+  --accent: #10b981;
+  --accent-hover: #059669;
   --danger: #ef4444;
-  --border: #334155;
-  --field: #0b1220;
-  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --danger-hover: #dc2626;
+  --border: #e2e8f0;
+  --field: #ffffff;
+  font-family: "Manrope Variable", system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
 }
 
 * {
@@ -36,6 +37,8 @@ body {
   gap: 8px;
   padding: 14px 16px;
   font-weight: 700;
+  letter-spacing: -0.01em;
+  background: var(--panel);
   border-bottom: 1px solid var(--border);
 }
 .brand-dot {
@@ -56,7 +59,7 @@ body {
   background: var(--accent);
 }
 .conn.off {
-  background: var(--muted);
+  background: #cbd5e1;
 }
 
 /* Shared form bits */
@@ -81,6 +84,10 @@ select {
 input:focus,
 select:focus {
   border-color: var(--accent);
+  box-shadow: 0 0 0 3px rgb(16 185 129 / 0.12);
+}
+input::placeholder {
+  color: #94a3b8;
 }
 button {
   cursor: pointer;
@@ -95,7 +102,7 @@ button:disabled {
   cursor: default;
 }
 .error {
-  color: #fca5a5;
+  color: var(--danger-hover);
   font-size: 13px;
   margin: 4px 0 10px;
 }
@@ -111,12 +118,13 @@ button:disabled {
 }
 .signin h1 {
   font-size: 20px;
+  letter-spacing: -0.02em;
   margin: 0 0 6px;
 }
 .signin form button {
   width: 100%;
   background: var(--accent);
-  color: #052e16;
+  color: #ffffff;
   margin-top: 4px;
 }
 .signin form button:hover:not(:disabled) {
@@ -133,7 +141,7 @@ button:disabled {
 .timer .start {
   width: 100%;
   background: var(--accent);
-  color: #052e16;
+  color: #ffffff;
   margin-top: auto;
 }
 .timer .start:hover:not(:disabled) {
@@ -165,7 +173,7 @@ button:disabled {
   font-size: 46px;
   font-variant-numeric: tabular-nums;
   font-weight: 700;
-  letter-spacing: 1px;
+  letter-spacing: -0.01em;
   margin: 18px 0;
 }
 .running-notes {
@@ -181,7 +189,7 @@ button:disabled {
   margin-top: auto;
 }
 .running .stop:hover:not(:disabled) {
-  background: #dc2626;
+  background: var(--danger-hover);
 }
 
 /* Footer */
@@ -223,6 +231,7 @@ button:disabled {
   background: var(--panel);
   border: 1px solid var(--border);
   border-radius: 12px;
+  box-shadow: 0 8px 24px rgb(15 23 42 / 0.12);
   -webkit-app-region: drag;
 }
 .mini-empty {
@@ -251,7 +260,7 @@ button:disabled {
   font-size: 22px;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
-  letter-spacing: 0.5px;
+  letter-spacing: -0.01em;
 }
 .mini-stop {
   -webkit-app-region: no-drag;
@@ -264,7 +273,7 @@ button:disabled {
   font-size: 12px;
 }
 .mini-stop:hover {
-  background: #dc2626;
+  background: var(--danger-hover);
 }
 
 /* Idle state */
@@ -273,7 +282,7 @@ button:disabled {
   color: var(--muted);
 }
 .idle-badge {
-  color: #f59e0b;
+  color: #d97706;
   font-size: 12px;
   font-weight: 600;
   margin-bottom: 8px;
